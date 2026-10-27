@@ -1,0 +1,282 @@
+@baseUrl = http://localhost:8080
+@contentType = application/json
+
+
+### 1. Получить всех пользователей (пустой список в начале)
+GET {{baseUrl}}/api/users
+Accept: {{contentType}}
+
+
+### 2. Создать пользователя #1 (владелец списков)
+POST {{baseUrl}}/api/users
+Content-Type: {{contentType}}
+
+{
+  "firstName": "Ivan",
+  "lastName": "Petrov",
+  "email": "ivan@example.com",
+  "password": "secret123"
+}
+
+
+### 3. Создать пользователя #2 (второй пользователь)
+POST {{baseUrl}}/api/users
+Content-Type: {{contentType}}
+
+{
+  "firstName": "Maria",
+  "lastName": "Sidorova",
+  "email": "maria@example.com",
+  "password": "secret456"
+}
+
+
+### 4. Получить пользователя по id
+GET {{baseUrl}}/api/users/1
+Accept: {{contentType}}
+
+
+### 5. Получить всех пользователей (теперь их 2)
+GET {{baseUrl}}/api/users
+Accept: {{contentType}}
+
+
+### 6. Обновить пользователя (частичное обновление через JsonNullable)
+PUT {{baseUrl}}/api/users/1
+Content-Type: {{contentType}}
+
+{
+  "firstName": "Ioann"
+}
+
+
+### 7. Проверить, что только firstName изменилось
+GET {{baseUrl}}/api/users/1
+Accept: {{contentType}}
+
+
+### 8. Негативный тест: получить несуществующего пользователя (404)
+GET {{baseUrl}}/api/users/9999
+Accept: {{contentType}}
+
+
+### 9. Получить все списки покупок (пустой список в начале)
+GET {{baseUrl}}/api/lists
+Accept: {{contentType}}
+
+
+### 10. Создать список #1 (владелец — user 1)
+POST {{baseUrl}}/api/lists
+Content-Type: {{contentType}}
+
+{
+  "authorId": 1,
+  "slug": "produkty-na-nedelyu",
+  "name": "Продукты на неделю",
+  "description": "Молоко, хлеб, яйца, сыр, овощи, фрукты"
+}
+
+
+### 11. Создать список #2 (для вечеринки)
+POST {{baseUrl}}/api/lists
+Content-Type: {{contentType}}
+
+{
+  "authorId": 2,
+  "slug": "dlya-vecherinki",
+  "name": "Для вечеринки",
+  "description": "Чипсы, кола, пицца, торт, сок"
+}
+
+
+### 12. Получить список по id
+GET {{baseUrl}}/api/lists/1
+Accept: {{contentType}}
+
+
+### 13. Получить все списки (теперь 2)
+GET {{baseUrl}}/api/lists
+Accept: {{contentType}}
+
+
+### 14. Обновить только name списка (проверка JsonNullable)
+PUT {{baseUrl}}/api/lists/1
+Content-Type: {{contentType}}
+
+{
+  "name": "Продукты на неделю (обновлено)"
+}
+
+
+### 15. Проверить: name изменилось, slug и description — нет
+GET {{baseUrl}}/api/lists/1
+Accept: {{contentType}}
+
+
+### 16. Обновить несколько полей сразу
+PUT {{baseUrl}}/api/lists/1
+Content-Type: {{contentType}}
+
+{
+  "name": "Продукты на две недели",
+  "description": "Расширенный список: + кофе, чай, печенье"
+}
+
+
+### 17. Негативный тест: 404 для несуществующего списка
+GET {{baseUrl}}/api/lists/9999
+Accept: {{contentType}}
+
+
+### 18. Получить все продукты (пустой список)
+GET {{baseUrl}}/api/products
+Accept: {{contentType}}
+
+
+### 19. Добавить продукт в список #1 (молоко 2 л)
+POST {{baseUrl}}/api/products
+Content-Type: {{contentType}}
+
+{
+  "listId": 1,
+  "authorId": 1,
+  "name": "Молоко",
+  "quantity": 2,
+  "unit": "л"
+}
+
+
+### 20. Добавить продукт в список #1 (хлеб 1 шт)
+POST {{baseUrl}}/api/products
+Content-Type: {{contentType}}
+
+{
+  "listId": 1,
+  "authorId": 1,
+  "name": "Хлеб",
+  "quantity": 1,
+  "unit": "шт"
+}
+
+
+### 21. Добавить продукт в список #1 (яйца 10 шт)
+POST {{baseUrl}}/api/products
+Content-Type: {{contentType}}
+
+{
+  "listId": 1,
+  "authorId": 2,
+  "name": "Яйца",
+  "quantity": 10,
+  "unit": "шт"
+}
+
+
+### 22. Добавить продукт в список #2 (чипсы 3 шт)
+POST {{baseUrl}}/api/products
+Content-Type: {{contentType}}
+
+{
+  "listId": 2,
+  "authorId": 2,
+  "name": "Чипсы",
+  "quantity": 3,
+  "unit": "шт"
+}
+
+
+### 23. Получить продукт по id
+GET {{baseUrl}}/api/products/1
+Accept: {{contentType}}
+
+
+### 24. Получить все продукты
+GET {{baseUrl}}/api/products
+Accept: {{contentType}}
+
+
+### 25. Получить все продукты конкретного списка (кастомный метод репозитория)
+GET {{baseUrl}}/api/lists/1/products
+Accept: {{contentType}}
+
+
+### 26. Обновить продукт (поменять количество)
+PUT {{baseUrl}}/api/products/1
+Content-Type: {{contentType}}
+
+{
+  "quantity": 3
+}
+
+
+### 27. Проверить, что только quantity изменилось
+GET {{baseUrl}}/api/products/1
+Accept: {{contentType}}
+
+
+### 28. Отметить продукт как купленный
+PUT {{baseUrl}}/api/products/1
+Content-Type: {{contentType}}
+
+{
+  "purchased": true
+}
+
+
+### 29. Проверить: purchased = true, остальное не изменилось
+GET {{baseUrl}}/api/products/1
+Accept: {{contentType}}
+
+
+### 30. Обновить несколько полей сразу
+PUT {{baseUrl}}/api/products/2
+Content-Type: {{contentType}}
+
+{
+  "name": "Хлеб Бородинский",
+  "quantity": 2,
+  "unit": "шт"
+}
+
+
+### 31. Негативный тест: 404 для несуществующего продукта
+GET {{baseUrl}}/api/products/9999
+Accept: {{contentType}}
+
+### 32. Удалить продукт #4
+DELETE {{baseUrl}}/api/products/4
+
+
+### 33. Убедиться, что продукт удалён (404)
+GET {{baseUrl}}/api/products/4
+Accept: {{contentType}}
+
+
+### 34. Удалить список #2 (вместе с его продуктами)
+DELETE {{baseUrl}}/api/lists/2
+
+
+### 35. Удалить список #1
+DELETE {{baseUrl}}/api/lists/1
+
+
+### 36. Удалить пользователя #2
+DELETE {{baseUrl}}/api/users/2
+
+
+### 37. Удалить пользователя #1
+DELETE {{baseUrl}}/api/users/1
+
+### 38. Все пользователи (пусто)
+GET {{baseUrl}}/api/users
+Accept: {{contentType}}
+
+
+### 39. Все списки (пусто)
+GET {{baseUrl}}/api/lists
+Accept: {{contentType}}
+
+
+### 40. Все продукты (пусто)
+GET {{baseUrl}}/api/products
+Accept: {{contentType}}

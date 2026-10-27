@@ -1,0 +1,5 @@
+*
+!target/
+target/*
+!target/MSA_shopping-0.0.1-SNAPSHOT.jar
+!Dockerfile
